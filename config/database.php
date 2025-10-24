@@ -81,8 +81,25 @@ class Database {
         try {
             $stmt = $this->db->prepare($sql);
             $stmt->execute($params);
+            
+            // Log successful queries (excluding sensitive data)
+            if (strpos(strtolower($sql), 'select') === 0) {
+                logInfo('Database query executed', ['query_type' => 'SELECT']);
+            } elseif (strpos(strtolower($sql), 'insert') === 0) {
+                logInfo('Database insert executed', ['query_type' => 'INSERT']);
+            } elseif (strpos(strtolower($sql), 'update') === 0) {
+                logInfo('Database update executed', ['query_type' => 'UPDATE']);
+            } elseif (strpos(strtolower($sql), 'delete') === 0) {
+                logInfo('Database delete executed', ['query_type' => 'DELETE']);
+            }
+            
             return $stmt;
         } catch (PDOException $e) {
+            logError('Database query error', [
+                'error' => $e->getMessage(),
+                'sql' => $sql,
+                'params' => $params
+            ]);
             error_log("Database query error: " . $e->getMessage());
             throw $e;
         }

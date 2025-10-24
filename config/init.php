@@ -22,6 +22,45 @@ require_once __DIR__ . '/database.php';
 // Include Jalali date helper
 require_once __DIR__ . '/../includes/jdate.php';
 
+// Setup logging with Monolog
+require_once __DIR__ . '/../vendor/autoload.php';
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Processor\UidProcessor;
+
+// Create logger
+$logger = new Logger('expenselogger');
+$logger->pushProcessor(new UidProcessor());
+
+// Add rotating file handler (keeps 30 days of logs)
+$logPath = __DIR__ . '/../logs/app.log';
+$rotatingHandler = new RotatingFileHandler($logPath, 30, Logger::INFO);
+$logger->pushHandler($rotatingHandler);
+
+// Add error handler for errors and above
+$errorHandler = new StreamHandler(__DIR__ . '/../logs/error.log', Logger::ERROR);
+$logger->pushHandler($errorHandler);
+
+// Make logger globally available
+$GLOBALS['logger'] = $logger;
+
+// Helper function for logging
+function logInfo($message, $context = []) {
+    global $logger;
+    $logger->info($message, $context);
+}
+
+function logError($message, $context = []) {
+    global $logger;
+    $logger->error($message, $context);
+}
+
+function logWarning($message, $context = []) {
+    global $logger;
+    $logger->warning($message, $context);
+}
+
 // Helper function to sanitize output (prevent XSS)
 function h($string) {
     return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');

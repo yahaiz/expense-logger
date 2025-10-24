@@ -1,0 +1,40 @@
+{
+    "name": "expenselogger/expenselogger",
+    "description": "Personal Expense Tracker - خرج‌نگار",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ExpenseLogger Team",
+            "email": "contact@expenselogger.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "monolog/monolog": "^3.0",
+        "symfony/rate-limiter": "^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^1.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "ExpenseLogger\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ExpenseLogger\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-html coverage",
+        "phpstan": "phpstan analyse"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
