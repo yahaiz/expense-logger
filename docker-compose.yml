@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  expense-logger:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./logs:/var/www/html/logs
+      - ./data:/var/www/html/data
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    networks:
+      - expense-logger-network
+
+  # Optional: Add MySQL database service if needed in the future
+  # mysql:
+  #   image: mysql:8.0
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpassword
+  #     MYSQL_DATABASE: expense_logger
+  #     MYSQL_USER: expense_user
+  #     MYSQL_PASSWORD: expense_password
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   networks:
+  #     - expense-logger-network
+
+networks:
+  expense-logger-network:
+    driver: bridge
+
+# volumes:
+#   mysql_data:

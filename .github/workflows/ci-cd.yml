@@ -1,0 +1,59 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: pdo, pdo_sqlite, mbstring, xml
+
+    - name: Install Composer dependencies
+      run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+    - name: Create test database
+      run: |
+        mkdir -p data
+        touch data/test.db
+
+    - name: Run PHPUnit tests
+      run: ./vendor/bin/phpunit --configuration phpunit.xml
+
+    - name: Check code style (if PHP CS Fixer is added later)
+      run: |
+        # Placeholder for future code style checks
+        echo "Code style check placeholder"
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Docker image
+      run: |
+        docker build -t expense-logger:${{ github.sha }} .
+        docker tag expense-logger:${{ github.sha }} expense-logger:latest
+
+    - name: Test Docker image
+      run: |
+        docker run -d --name test-container -p 8080:80 expense-logger:latest
+        sleep 10
+        curl -f http://localhost:8080/index.php || exit 1
+        docker stop test-container
+        docker rm test-container
