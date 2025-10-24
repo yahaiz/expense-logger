@@ -45,6 +45,9 @@ AddDefaultCharset UTF-8
     # Skip HSTS for localhost and 127.0.0.1 to avoid SSL issues in development
     Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=!LOCALHOST
 
+    # For localhost, explicitly remove any existing HSTS
+    Header set Strict-Transport-Security "max-age=0" env=LOCALHOST
+
     # Security Headers
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "SAMEORIGIN"
