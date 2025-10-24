@@ -33,8 +33,10 @@ AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Force HTTPS
+    # Force HTTPS only in production (not localhost)
     RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} !^localhost$
+    RewriteCond %{HTTP_HOST} !^127\.0\.0\.1$
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
@@ -74,20 +76,20 @@ AddDefaultCharset UTF-8
     Deny from all
 </FilesMatch>
 
-# Protect vendor directory
-<Directory "vendor/">
+# Protect vendor directory using FilesMatch
+<FilesMatch "^vendor/">
     Order allow,deny
     Deny from all
-</Directory>
+</FilesMatch>
 
-# Protect config files
-<Directory "config/">
+# Protect config files using FilesMatch
+<FilesMatch "^config/">
     Order allow,deny
     Deny from all
-</Directory>
+</FilesMatch>
 
-# Protect test files
-<Directory "tests/">
+# Protect test files using FilesMatch
+<FilesMatch "^tests/">
     Order allow,deny
     Deny from all
-</Directory>
+</FilesMatch>

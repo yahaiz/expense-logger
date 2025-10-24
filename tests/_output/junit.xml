@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="22" assertions="38" errors="0" warnings="0" failures="0" skipped="1" time="0.072097">
-    <testsuite name="ExpenseLogger Test Suite" tests="22" assertions="38" errors="0" warnings="0" failures="0" skipped="1" time="0.072097">
-      <testsuite name="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" tests="5" assertions="10" errors="0" warnings="0" failures="0" skipped="0" time="0.015695">
-        <testcase name="testDatabaseConnection" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="46" assertions="1" time="0.002755"/>
-        <testcase name="testInsertAndRetrieveCategory" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="51" assertions="2" time="0.002736"/>
-        <testcase name="testInsertAndRetrieveExpense" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="67" assertions="4" time="0.002988"/>
-        <testcase name="testCategoryExpenseRelationship" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="90" assertions="1" time="0.003343"/>
-        <testcase name="testPreparedStatementSecurity" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="117" assertions="2" time="0.003872"/>
+  <testsuite name="" tests="22" assertions="38" errors="0" warnings="0" failures="0" skipped="1" time="0.068313">
+    <testsuite name="ExpenseLogger Test Suite" tests="22" assertions="38" errors="0" warnings="0" failures="0" skipped="1" time="0.068313">
+      <testsuite name="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" tests="5" assertions="10" errors="0" warnings="0" failures="0" skipped="0" time="0.014860">
+        <testcase name="testDatabaseConnection" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="46" assertions="1" time="0.002725"/>
+        <testcase name="testInsertAndRetrieveCategory" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="51" assertions="2" time="0.003327"/>
+        <testcase name="testInsertAndRetrieveExpense" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="67" assertions="4" time="0.002819"/>
+        <testcase name="testCategoryExpenseRelationship" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="90" assertions="1" time="0.002775"/>
+        <testcase name="testPreparedStatementSecurity" class="DatabaseTest" classname="DatabaseTest" file="C:\xampp\htdocs\ExpenseLogger\tests\DatabaseTest.php" line="117" assertions="2" time="0.003213"/>
       </testsuite>
-      <testsuite name="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" tests="10" assertions="14" errors="0" warnings="0" failures="0" skipped="0" time="0.026976">
-        <testcase name="testSanitizeInput" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="23" assertions="1" time="0.002436"/>
-        <testcase name="testHFunction" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="31" assertions="1" time="0.002496"/>
-        <testcase name="testFormatCurrencyUSD" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="39" assertions="1" time="0.002516"/>
-        <testcase name="testFormatCurrencyToman" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="48" assertions="1" time="0.002670"/>
-        <testcase name="testFormatCurrencyThousandToman" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="57" assertions="1" time="0.002520"/>
-        <testcase name="testFormatDateGregorian" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="66" assertions="1" time="0.002417"/>
-        <testcase name="testFormatDateJalali" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="75" assertions="2" time="0.004366"/>
-        <testcase name="testSetFlashMessage" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="85" assertions="2" time="0.002572"/>
-        <testcase name="testGetFlashMessage" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="93" assertions="3" time="0.002525"/>
-        <testcase name="testRedirectFunction" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="109" assertions="1" time="0.002459"/>
+      <testsuite name="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" tests="10" assertions="14" errors="0" warnings="0" failures="0" skipped="0" time="0.026959">
+        <testcase name="testSanitizeInput" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="23" assertions="1" time="0.002449"/>
+        <testcase name="testHFunction" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="31" assertions="1" time="0.002558"/>
+        <testcase name="testFormatCurrencyUSD" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="39" assertions="1" time="0.002679"/>
+        <testcase name="testFormatCurrencyToman" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="48" assertions="1" time="0.002966"/>
+        <testcase name="testFormatCurrencyThousandToman" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="57" assertions="1" time="0.002493"/>
+        <testcase name="testFormatDateGregorian" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="66" assertions="1" time="0.002839"/>
+        <testcase name="testFormatDateJalali" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="75" assertions="2" time="0.003242"/>
+        <testcase name="testSetFlashMessage" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="85" assertions="2" time="0.002311"/>
+        <testcase name="testGetFlashMessage" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="93" assertions="3" time="0.002687"/>
+        <testcase name="testRedirectFunction" class="HelperTest" classname="HelperTest" file="C:\xampp\htdocs\ExpenseLogger\tests\HelperTest.php" line="109" assertions="1" time="0.002736"/>
       </testsuite>
-      <testsuite name="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" tests="4" assertions="7" errors="0" warnings="0" failures="0" skipped="1" time="0.017665">
-        <testcase name="testLoggerIsAvailable" class="LoggingTest" classname="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" line="20" assertions="2" time="0.003504"/>
-        <testcase name="testLogFunctionsExist" class="LoggingTest" classname="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" line="26" assertions="3" time="0.002483"/>
-        <testcase name="testLoggingCreatesFiles" class="LoggingTest" classname="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" line="33" assertions="2" time="0.005618"/>
-        <testcase name="testLogContent" class="LoggingTest" classname="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" line="54" assertions="0" time="0.006060">
+      <testsuite name="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" tests="4" assertions="7" errors="0" warnings="0" failures="0" skipped="1" time="0.015543">
+        <testcase name="testLoggerIsAvailable" class="LoggingTest" classname="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" line="20" assertions="2" time="0.003184"/>
+        <testcase name="testLogFunctionsExist" class="LoggingTest" classname="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" line="26" assertions="3" time="0.002635"/>
+        <testcase name="testLoggingCreatesFiles" class="LoggingTest" classname="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" line="33" assertions="2" time="0.004894"/>
+        <testcase name="testLogContent" class="LoggingTest" classname="LoggingTest" file="C:\xampp\htdocs\ExpenseLogger\tests\LoggingTest.php" line="54" assertions="0" time="0.004830">
           <skipped/>
         </testcase>
       </testsuite>
-      <testsuite name="RateLimiterTest" file="C:\xampp\htdocs\ExpenseLogger\tests\RateLimiterTest.php" tests="3" assertions="7" errors="0" warnings="0" failures="0" skipped="0" time="0.011762">
-        <testcase name="testRateLimiterAllowsRequestsWithinLimit" class="RateLimiterTest" classname="RateLimiterTest" file="C:\xampp\htdocs\ExpenseLogger\tests\RateLimiterTest.php" line="9" assertions="5" time="0.004163"/>
-        <testcase name="testRateLimiterBlocksExcessiveRequests" class="RateLimiterTest" classname="RateLimiterTest" file="C:\xampp\htdocs\ExpenseLogger\tests\RateLimiterTest.php" line="19" assertions="1" time="0.005078"/>
-        <testcase name="testGetRemainingAttempts" class="RateLimiterTest" classname="RateLimiterTest" file="C:\xampp\htdocs\ExpenseLogger\tests\RateLimiterTest.php" line="28" assertions="1" time="0.002520"/>
+      <testsuite name="RateLimiterTest" file="C:\xampp\htdocs\ExpenseLogger\tests\RateLimiterTest.php" tests="3" assertions="7" errors="0" warnings="0" failures="0" skipped="0" time="0.010952">
+        <testcase name="testRateLimiterAllowsRequestsWithinLimit" class="RateLimiterTest" classname="RateLimiterTest" file="C:\xampp\htdocs\ExpenseLogger\tests\RateLimiterTest.php" line="9" assertions="5" time="0.004396"/>
+        <testcase name="testRateLimiterBlocksExcessiveRequests" class="RateLimiterTest" classname="RateLimiterTest" file="C:\xampp\htdocs\ExpenseLogger\tests\RateLimiterTest.php" line="19" assertions="1" time="0.004240"/>
+        <testcase name="testGetRemainingAttempts" class="RateLimiterTest" classname="RateLimiterTest" file="C:\xampp\htdocs\ExpenseLogger\tests\RateLimiterTest.php" line="28" assertions="1" time="0.002316"/>
       </testsuite>
     </testsuite>
   </testsuite>

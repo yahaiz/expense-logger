@@ -16,6 +16,17 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Initialize session defaults
+if (!isset($_SESSION['theme'])) {
+    $_SESSION['theme'] = 'light';
+}
+if (!isset($_SESSION['currency'])) {
+    $_SESSION['currency'] = 'USD';
+}
+if (!isset($_SESSION['calendar'])) {
+    $_SESSION['calendar'] = 'gregorian';
+}
+
 // Include database configuration
 require_once __DIR__ . '/database.php';
 
