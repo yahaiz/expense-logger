@@ -114,16 +114,27 @@ Core Application:
 ├── categories.php (380 lines)
 ├── report.php (480 lines)
 ├── backup.php (420 lines)
-├── demo_data.php (150 lines)
-└── welcome.php (180 lines)
+├── tools/demo_data.php (150 lines)
+├── welcome.php (180 lines)
+├── login.php (120 lines)
+├── register.php (150 lines)
+└── lock.php (80 lines)
 
 Documentation:
 ├── README.md (800 lines)
-├── INSTALL.md (300 lines)
-└── FEATURES.md (400 lines)
+├── docs/INSTALL.md (300 lines)
+├── docs/FEATURES.md (400 lines)
+├── docs/PROJECT_SUMMARY.md (500 lines)
+└── CONTRIBUTING.md (200 lines)
 
-Configuration:
-└── .htaccess (30 lines)
+Configuration & Scripts:
+├── tools/check_db.php (50 lines)
+├── tools/migrate.php (80 lines)
+├── tools/generate_migration.php (60 lines)
+├── tools/run_migrations.php (40 lines)
+├── tools/test_config.php (30 lines)
+├── .htaccess (30 lines)
+└── docker/docker-compose.yml (60 lines)
 ```
 
 ### Code Metrics
@@ -189,7 +200,7 @@ Configuration:
 ### Quick Start (3 Steps)
 1. **Start XAMPP** → Apache module
 2. **Open Browser** → `http://localhost/ExpenseLogger`
-3. **Load Demo Data** → Visit `demo_data.php`
+3. **Load Demo Data** → Visit `tools/demo_data.php`
 
 ### First-Time Setup
 ```
@@ -348,8 +359,10 @@ Potential additions:
 - Categories: `categories.php`
 - Reports: `report.php`
 - Backup: `backup.php`
-- Demo Data: `demo_data.php`
+- Demo Data: `tools/demo_data.php`
 - Welcome: `welcome.php`
+- Login: `login.php`
+- Register: `register.php`
 
 ---
 

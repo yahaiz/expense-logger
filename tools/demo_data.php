@@ -2,7 +2,7 @@
 /**
  * Sample Data Generator
  * Run this script once to populate the database with sample data for testing
- * Access via: http://localhost/ExpenseLogger/demo_data.php
+ * Access via: http://localhost/ExpenseLogger/tools/demo_data.php
  */
 
 require_once __DIR__ . '/config/init.php';

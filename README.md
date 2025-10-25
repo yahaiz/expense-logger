@@ -95,28 +95,63 @@ npm run dist
 
 ```
 expenselogger/
-├── assets/                 # Static assets (CSS, JS, fonts, icons)
-│   ├── css/               # Stylesheets
-│   ├── js/                # JavaScript files
-│   ├── fonts/             # Font files
-│   └── webfonts/          # Font Awesome fonts
-├── config/                # Configuration files
-│   ├── database.php       # Database setup
-│   ├── init.php          # App initialization
-│   └── themes.php        # Theme definitions
-├── includes/              # PHP includes
-│   ├── header.php        # Common header/navbar
-│   └── footer.php        # Common footer
-├── api/                   # API endpoints
-├── data/                  # SQLite database (auto-created)
-├── electron/              # Electron main process
-├── php/                   # Bundled PHP runtime
-├── docs/                  # Documentation
-├── dist/                  # Build output (ignored)
-├── .gitignore            # Git ignore rules
-├── package.json          # Node.js dependencies
-├── composer.json         # PHP dependencies
-└── README.md             # This file
+├── index.php                 # Dashboard/home page
+├── expenses.php              # Expense management
+├── categories.php            # Category management
+├── report.php                # Reports and analytics
+├── settings.php              # Application settings
+├── backup.php                # Backup/restore functionality
+├── welcome.php               # Welcome/onboarding page
+├── login.php                 # User login
+├── register.php              # User registration
+├── logout.php                # User logout
+├── lock.php                  # App locking
+├── unlock.php                # App unlocking
+├── api/                      # API endpoints
+├── assets/                   # Static assets (CSS, JS, fonts, icons)
+│   ├── css/                  # Stylesheets
+│   ├── js/                   # JavaScript files
+│   ├── fonts/                # Font files
+│   └── webfonts/             # Font Awesome fonts
+├── config/                   # Configuration files
+│   ├── database.php          # Database setup
+│   ├── init.php             # App initialization
+│   └── themes.php           # Theme definitions
+├── includes/                 # PHP includes
+│   ├── header.php           # Common header/navbar
+│   └── footer.php           # Common footer
+├── tools/                    # Utility and development scripts
+│   ├── demo_data.php        # Sample data generator
+│   ├── check_db.php         # Database health check
+│   ├── migrate.php          # Database migration runner
+│   ├── generate_migration.php # Migration generator
+│   ├── run_migrations.php   # Migration executor
+│   └── test_config.php      # Configuration tester
+├── data/                     # SQLite database (auto-created)
+├── electron/                 # Electron main process
+├── php/                      # Bundled PHP runtime
+├── docs/                     # Documentation
+├── docker/                   # Docker configuration
+│   ├── docker-compose.yml   # Docker Compose setup
+│   ├── Dockerfile          # Docker image definition
+│   └── .dockerignore       # Docker ignore rules
+├── dev/                      # Development and test files
+│   ├── splash.html         # Electron loading screen
+│   └── test-parser.html    # Theme parser test
+├── logs/                     # Application logs
+├── migrations/               # Database migrations
+├── tests/                    # Unit and integration tests
+├── desktop/                  # Desktop-specific files
+├── .github/                  # GitHub configuration
+│   └── workflows/           # CI/CD workflows
+├── dist/                     # Build output (ignored)
+├── .gitignore               # Git ignore rules
+├── .htaccess                # Apache configuration
+├── package.json             # Node.js dependencies
+├── composer.json            # PHP dependencies
+├── CONTRIBUTING.md          # Contribution guidelines
+├── LICENSE                  # MIT license
+└── README.md                # This file
 ```
 
 ## 🛠️ Tech Stack
