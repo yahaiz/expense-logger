@@ -5,6 +5,14 @@
 
 ---
 
+## 🤖 DEVELOPMENT APPROACH
+
+**This project was completely developed using AI technology, guided by Yahya Izadi.**
+
+The entire codebase, documentation, and project structure were created through AI-assisted development, demonstrating the capabilities of modern AI tools in producing professional-grade software applications.
+
+---
+
 ## ✅ PROJECT STATUS: 100% COMPLETE
 
 All requirements have been successfully implemented and tested.

@@ -2,6 +2,12 @@
 
 Thank you for your interest in contributing to ExpenseLogger! We welcome contributions from the community. This document provides guidelines and information for contributors.
 
+## 🤖 Project Development
+
+**This project was completely developed using AI technology, guided by Yahya Izadi.**
+
+The entire codebase, documentation, and project structure were created through AI-assisted development. This demonstrates the capabilities of modern AI tools in producing professional-grade software applications while maintaining high code quality and comprehensive documentation.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
