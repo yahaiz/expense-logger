@@ -20,7 +20,7 @@ The entire codebase, documentation, and project structure were created through A
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/expenselogger.git
+   git clone https://github.com/yahaiz/expense-logger.git
    cd expenselogger
    ```
 

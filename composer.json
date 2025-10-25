@@ -3,7 +3,7 @@
     "description": "Personal Expense Tracker - Standalone Desktop Application",
     "type": "project",
     "license": "MIT",
-    "homepage": "https://github.com/yourusername/expenselogger",
+    "homepage": "https://github.com/yahaiz/expense-logger",
     "keywords": [
         "expense",
         "tracker",
@@ -16,14 +16,14 @@
     ],
     "authors": [
         {
-            "name": "ExpenseLogger Team",
-            "email": "contact@expenselogger.app",
-            "homepage": "https://github.com/yourusername/expenselogger"
+            "name": "Yahya Izadi",
+            "email": "yahyaa84iz@gmail.com",
+            "homepage": "https://github.com/yahaiz/expense-logger"
         }
     ],
     "support": {
-        "issues": "https://github.com/yourusername/expenselogger/issues",
-        "source": "https://github.com/yourusername/expenselogger"
+        "issues": "https://github.com/yahaiz/expense-logger/issues",
+        "source": "https://github.com/yahaiz/expense-logger"
     },
     "require": {
         "php": ">=8.2",

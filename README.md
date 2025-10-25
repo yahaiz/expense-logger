@@ -72,7 +72,7 @@ The entire codebase, documentation, and project structure were created through A
 - **No additional dependencies** - Everything is bundled!
 
 ### Installation
-1. **Download** the latest release from [GitHub Releases](https://github.com/yourusername/expenselogger/releases)
+1. **Download** the latest release from [GitHub Releases](https://github.com/yahaiz/expense-logger/releases)
 2. **Extract** the ZIP file to your desired location
 3. **Run** `ExpenseLogger.exe` (Windows) or the appropriate executable for your platform
 4. **First Time Setup**: Register as the first user (automatically becomes admin)
@@ -80,7 +80,7 @@ The entire codebase, documentation, and project structure were created through A
 ### Building from Source
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/expenselogger.git
+git clone https://github.com/yahaiz/expense-logger.git
 cd expenselogger
 
 # Install dependencies
@@ -180,8 +180,8 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 📞 Support
 
-- 📧 **Email**: your.email@example.com
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/expenselogger/issues)
+- 📧 **Email**: yahyaa84iz@gmail.com
+- 🐛 **Issues**: [GitHub Issues](https://github.com/yahaiz/expense-logger/issues)
 - 📖 **Documentation**: See [docs/](docs/) directory
 
 ---
