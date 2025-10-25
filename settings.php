@@ -7,6 +7,7 @@ require_once __DIR__ . '/config/init.php';
 require_once __DIR__ . '/config/theme-generator.php';
 
 $pageTitle = 'Settings';
+
 $themes = require __DIR__ . '/config/themes.php';
 
 include __DIR__ . '/includes/header.php';
@@ -196,22 +197,103 @@ include __DIR__ . '/includes/header.php';
         </div>
     </div>
 
-    <!-- Info Card -->
-    <div class="alert alert-info">
-        <i class="fas fa-info-circle text-xl"></i>
-        <div>
-            <h3 class="font-bold">Settings Auto-Save</h3>
-            <div class="text-sm">Your preferences are automatically saved when you make changes.</div>
+    <!-- App Lock Settings -->
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title">
+                <i class="fas fa-lock text-red-600"></i>
+                Application Lock
+            </h2>
+            <p class="text-base-content/70 mb-4">Control access to your expense application</p>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 border border-base-300 rounded-lg">
+                    <div>
+                        <h3 class="font-semibold">Application Status</h3>
+                        <p class="text-sm text-base-content/70">
+                            <?php echo isAppLocked() ? 'Currently locked' : 'Currently unlocked'; ?>
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <?php if (!isAppLocked()): ?>
+                            <button onclick="lockApp()" class="btn btn-warning btn-sm">
+                                <i class="fas fa-lock"></i> Lock App
+                            </button>
+                        <?php else: ?>
+                            <a href="unlock.php" class="btn btn-success btn-sm">
+                                <i class="fas fa-unlock"></i> Unlock App
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <h4 class="font-bold">How it works:</h4>
+                        <ul class="text-sm list-disc list-inside mt-2">
+                            <li>Set a password on first use</li>
+                            <li>Lock the app when you're done</li>
+                            <li>Unlock with your password when you return</li>
+                            <li>App stays unlocked until you manually lock it again</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
+// App Lock Setting
+function lockApp() {
+    if (confirm('Are you sure you want to lock the application? You will need to enter your password to unlock it.')) {
+        fetch('api/lock.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ action: 'lock' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Application locked successfully!');
+                location.reload();
+            } else {
+                alert('Error: ' + data.error);
+            }
+        })
+        .catch(error => {
+            alert('Failed to lock application: ' + error.message);
+        });
+    }
+}
+
 // Theme Setting
+document.querySelectorAll('.theme-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+        // Don't trigger if clicking on delete button
+        if (e.target.closest('.btn-error')) {
+            return;
+        }
+        
+        const radio = this.querySelector('input[type="radio"]');
+        if (radio) {
+            radio.checked = true;
+            radio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+});
+
 document.querySelectorAll('input[name="theme-setting"]').forEach(radio => {
     radio.addEventListener('change', function() {
         const theme = this.value;
-        document.documentElement.setAttribute('data-theme', theme);
+        console.log('Theme change requested:', theme);
+        
+        // Show loading feedback
+        const originalText = this.closest('.theme-card').querySelector('span').textContent;
+        this.closest('.theme-card').querySelector('span').textContent = 'Loading...';
         
         // Save theme preference
         fetch('api/theme.php', {
@@ -220,6 +302,35 @@ document.querySelectorAll('input[name="theme-setting"]').forEach(radio => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ theme: theme })
+        })
+        .then(response => {
+            console.log('API response status:', response.status);
+            if (!response.ok) {
+                throw new Error('HTTP error! status: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('API response data:', data);
+            if (data.success) {
+                console.log('Theme changed successfully, reloading...');
+                // Show success briefly
+                this.closest('.theme-card').querySelector('span').textContent = '✓ Applied!';
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            } else {
+                console.error('Theme change failed:', data.error);
+                alert('Error: ' + data.error);
+                // Reset text
+                this.closest('.theme-card').querySelector('span').textContent = originalText;
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            alert('Failed to change theme: ' + error.message);
+            // Reset text
+            this.closest('.theme-card').querySelector('span').textContent = originalText;
         });
     });
 });

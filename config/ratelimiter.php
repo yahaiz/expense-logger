@@ -13,8 +13,13 @@ class RateLimiter
 {
     private static $limiters = [];
 
-    public static function check($key, $limit = 100, $interval = 3600)
+    public static function check($key, $limit = null, $interval = 3600)
     {
+        // Use config values if not specified
+        if ($limit === null) {
+            $limit = config('security.rate_limit_requests', 100);
+        }
+
         $storage = new InMemoryStorage();
 
         $factory = new RateLimiterFactory([

@@ -1,0 +1,48 @@
+# Environment variables
+.env
+
+# Logs
+logs/*.log
+logs/app.log
+logs/error.log
+
+# Database files
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data/app.lock
+data/app.password
+
+# Build directories
+dist/
+node_modules/
+
+# Vendor dependencies
+vendor/
+
+# Test cache
+.phpunit.result.cache
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+*~

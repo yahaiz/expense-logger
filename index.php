@@ -10,22 +10,37 @@ require_once __DIR__ . '/config/init.php';
 $pageTitle = 'Dashboard';
 $db = Database::getInstance();
 
+require_once __DIR__ . '/config/init.php';
+
+$pageTitle = 'Dashboard';
+$db = Database::getInstance();
+
 // Get total expenses
-$totalResult = $db->query("SELECT COALESCE(SUM(amount), 0) as total FROM expenses")->fetch();
+$totalResult = $db->query(
+    "SELECT COALESCE(SUM(amount), 0) as total FROM expenses",
+    []
+)->fetch();
 $totalExpenses = $totalResult['total'];
 
 // Get expense count
-$countResult = $db->query("SELECT COUNT(*) as count FROM expenses")->fetch();
+$countResult = $db->query(
+    "SELECT COUNT(*) as count FROM expenses",
+    []
+)->fetch();
 $expenseCount = $countResult['count'];
 
 // Get category count
-$categoryCountResult = $db->query("SELECT COUNT(*) as count FROM categories")->fetch();
+$categoryCountResult = $db->query(
+    "SELECT COUNT(*) as count FROM categories",
+    []
+)->fetch();
 $categoryCount = $categoryCountResult['count'];
 
 // Get current month expenses
 $currentMonthResult = $db->query(
     "SELECT COALESCE(SUM(amount), 0) as total FROM expenses 
-     WHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')"
+     WHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')",
+    []
 )->fetch();
 $currentMonthExpenses = $currentMonthResult['total'];
 
@@ -33,9 +48,10 @@ $currentMonthExpenses = $currentMonthResult['total'];
 $categoryExpenses = $db->query(
     "SELECT c.name, COALESCE(SUM(e.amount), 0) as total 
      FROM categories c 
-     LEFT JOIN expenses e ON c.id = e.category_id 
+     LEFT JOIN expenses e ON c.id = e.category_id
      GROUP BY c.id, c.name 
-     ORDER BY total DESC"
+     ORDER BY total DESC",
+    []
 )->fetchAll();
 
 // Get daily expenses for last 7 days for bar chart
@@ -44,7 +60,8 @@ $dailyExpenses = $db->query(
      FROM expenses 
      WHERE date >= date('now', '-6 days') 
      GROUP BY date 
-     ORDER BY date ASC"
+     ORDER BY date ASC",
+    []
 )->fetchAll();
 
 // Fill missing dates with 0
@@ -71,7 +88,8 @@ $recentExpenses = $db->query(
      JOIN categories c ON e.category_id = c.id 
      GROUP BY e.id
      ORDER BY e.date DESC, e.created_at DESC 
-     LIMIT 5"
+     LIMIT 5",
+    []
 )->fetchAll();
 
 include __DIR__ . '/includes/header.php';

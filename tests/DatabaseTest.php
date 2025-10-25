@@ -21,7 +21,9 @@ class DatabaseTest extends TestCase
             CREATE TABLE categories (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                user_id INTEGER,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
         ");
 
@@ -30,10 +32,12 @@ class DatabaseTest extends TestCase
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 amount REAL NOT NULL,
                 category_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
                 date DATE NOT NULL,
                 note TEXT,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+                FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
         ");
     }
@@ -72,8 +76,8 @@ class DatabaseTest extends TestCase
         $categoryId = $this->db->lastInsertId();
 
         // Insert an expense
-        $stmt = $this->db->prepare("INSERT INTO expenses (amount, category_id, date, note) VALUES (?, ?, ?, ?)");
-        $stmt->execute([25.50, $categoryId, '2025-10-24', 'Test expense']);
+        $stmt = $this->db->prepare("INSERT INTO expenses (amount, category_id, user_id, date, note) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([25.50, $categoryId, 1, '2025-10-24', 'Test expense']);
         $expenseId = $this->db->lastInsertId();
 
         // Retrieve the expense
@@ -102,8 +106,8 @@ class DatabaseTest extends TestCase
         ];
 
         foreach ($expenses as $expense) {
-            $stmt = $this->db->prepare("INSERT INTO expenses (amount, category_id, date, note) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$expense[0], $categoryId, '2025-10-24', $expense[1]]);
+            $stmt = $this->db->prepare("INSERT INTO expenses (amount, category_id, user_id, date, note) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$expense[0], $categoryId, 1, '2025-10-24', $expense[1]]);
         }
 
         // Calculate total expenses for category

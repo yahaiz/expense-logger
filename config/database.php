@@ -11,8 +11,14 @@ class Database {
     private $dbPath;
 
     private function __construct() {
-        $this->dbPath = __DIR__ . '/../data/expenselogger.db';
-        
+        // Check if running in Electron (user-specific database)
+        $userDbPath = getenv('EXPENSELOGGER_DB_PATH');
+        if ($userDbPath && is_dir(dirname($userDbPath))) {
+            $this->dbPath = $userDbPath;
+        } else {
+            $this->dbPath = __DIR__ . '/../data/expenselogger.db';
+        }
+
         // Create data directory if it doesn't exist
         $dataDir = dirname($this->dbPath);
         if (!is_dir($dataDir)) {
@@ -41,12 +47,29 @@ class Database {
     }
 
     private function initDatabase() {
+        // Create users table
+        $this->db->exec("
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                email TEXT NOT NULL UNIQUE,
+                password_hash TEXT NOT NULL,
+                full_name TEXT,
+                role TEXT DEFAULT 'user' CHECK (role IN ('admin', 'user')),
+                is_active INTEGER DEFAULT 1,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ");
+
         // Create categories table
         $this->db->exec("
             CREATE TABLE IF NOT EXISTS categories (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                user_id INTEGER,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
         ");
 
@@ -56,21 +79,35 @@ class Database {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 amount REAL NOT NULL,
                 category_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
                 date DATE NOT NULL,
                 note TEXT,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+                FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
         ");
+
+        // Insert default admin user if no users exist
+        $stmt = $this->db->query("SELECT COUNT(*) as count FROM users");
+        $result = $stmt->fetch();
+
+        if ($result['count'] == 0) {
+            $adminPassword = password_hash('admin123', PASSWORD_DEFAULT);
+            $this->db->prepare("
+                INSERT INTO users (username, email, password_hash, full_name, role)
+                VALUES (?, ?, ?, ?, ?)
+            ")->execute(['admin', 'admin@expenselogger.local', $adminPassword, 'Administrator', 'admin']);
+        }
 
         // Insert default categories if table is empty
         $stmt = $this->db->query("SELECT COUNT(*) as count FROM categories");
         $result = $stmt->fetch();
-        
+
         if ($result['count'] == 0) {
             $defaultCategories = ['Food', 'Transport', 'Health', 'Shopping', 'Other'];
             $stmt = $this->db->prepare("INSERT INTO categories (name) VALUES (?)");
-            
+
             foreach ($defaultCategories as $category) {
                 $stmt->execute([$category]);
             }

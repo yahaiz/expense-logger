@@ -60,7 +60,7 @@ if ($existingExpenses > 0) {
         
         // Insert sample expenses
         $stmt = $db->getConnection()->prepare(
-            "INSERT INTO expenses (amount, category_id, date, note) VALUES (?, ?, ?, ?)"
+            "INSERT INTO expenses (amount, category_id, user_id, date, note) VALUES (?, ?, ?, ?, ?)"
         );
         
         $insertedCount = 0;
@@ -69,6 +69,7 @@ if ($existingExpenses > 0) {
                 $stmt->execute([
                     $expense['amount'],
                     $categories[$expense['category']],
+                    1, // Use default admin user ID
                     $expense['date'],
                     $expense['note']
                 ]);
@@ -93,9 +94,9 @@ if ($existingExpenses > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Data Generator - ExpenseLogger</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="assets/css/daisyui.min.css" rel="stylesheet" type="text/css" />
+    <script src="assets/js/tailwindcss.min.js"></script>
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
 </head>
 <body class="min-h-screen bg-base-200 flex items-center justify-center p-4">
     <div class="card w-full max-w-2xl bg-base-100 shadow-2xl">

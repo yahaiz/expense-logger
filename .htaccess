@@ -1,6 +1,12 @@
-# Protect data directory
-<Files "*.db">
-    Require all denied
+# Protect sensitive files
+<Files ".app_password">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files ".app_locked">
+    Order allow,deny
+    Deny from all
 </Files>
 
 # Prevent directory listing

@@ -10,6 +10,11 @@ require_once __DIR__ . '/config/init.php';
 $pageTitle = 'Categories';
 $db = Database::getInstance();
 
+require_once __DIR__ . '/config/init.php';
+
+$pageTitle = 'Categories';
+$db = Database::getInstance();
+
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -84,9 +89,10 @@ if (isset($_GET['delete'])) {
 $categories = $db->query(
     "SELECT c.*, COUNT(e.id) as expense_count, COALESCE(SUM(e.amount), 0) as total_amount
      FROM categories c 
-     LEFT JOIN expenses e ON c.id = e.category_id 
+     LEFT JOIN expenses e ON c.id = e.category_id
      GROUP BY c.id 
-     ORDER BY c.name"
+     ORDER BY c.name",
+    []
 )->fetchAll();
 
 include __DIR__ . '/includes/header.php';

@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($amount > 0 && $category_id > 0 && !empty($date)) {
             try {
                 $db->query(
-                    "INSERT INTO expenses (amount, category_id, date, note) VALUES (?, ?, ?, ?)",
-                    [$amount, $category_id, $date, $note]
+                    "INSERT INTO expenses (amount, category_id, user_id, date, note) VALUES (?, ?, ?, ?, ?)",
+                    [$amount, $category_id, 1, $date, $note]
                 );
                 setFlashMessage('success', 'Expense added successfully!');
                 redirect('expenses.php');
@@ -107,7 +107,7 @@ if (isset($_GET['delete'])) {
 }
 
 // Get categories for filter and form
-$categories = $db->query("SELECT * FROM categories ORDER BY name")->fetchAll();
+$categories = $db->query("SELECT * FROM categories ORDER BY name", [])->fetchAll();
 
 // Build filter query
 $whereConditions = [];

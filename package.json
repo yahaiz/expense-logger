@@ -1,0 +1,94 @@
+{
+  "name": "expenselogger",
+  "version": "1.0.0",
+  "description": "Personal Expense Tracker - Standalone Desktop Application",
+  "main": "electron/main.js",
+  "homepage": "https://github.com/yourusername/expenselogger",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/expenselogger.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/expenselogger/issues"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish=never",
+    "dist:win": "electron-builder --win --publish=never",
+    "dist:mac": "electron-builder --mac --publish=never",
+    "dist:linux": "electron-builder --linux --publish=never",
+    "clean": "rimraf dist node_modules",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "devDependencies": {
+    "electron": "^38.4.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.expenselogger.app",
+    "productName": "ExpenseLogger",
+    "copyright": "Copyright © 2025 ExpenseLogger",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "assets/**/*",
+      "config/**/*",
+      "includes/**/*",
+      "api/**/*",
+      "data/**/*",
+      "vendor/**/*",
+      "composer.json",
+      "composer.lock",
+      "*.php",
+      "*.html",
+      "*.css",
+      "*.js",
+      "!tests/**/*",
+      "!phpunit.xml",
+      "!README.md",
+      "!*.md",
+      "!docs/**/*",
+      "!CONTRIBUTING.md",
+      "!LICENSE",
+      "php/**/*"
+    ],
+    "asar": false,
+    "win": {
+      "target": "dir",
+      "icon": "assets/icon.ico",
+      "forceCodeSigning": false,
+      "signAndEditExecutable": false,
+      "signExts": []
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    }
+  },
+  "keywords": [
+    "expense",
+    "tracker",
+    "finance",
+    "personal",
+    "desktop",
+    "electron",
+    "php",
+    "sqlite"
+  ],
+  "author": {
+    "name": "ExpenseLogger Team",
+    "email": "contact@expenselogger.app"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -25,31 +25,31 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($pageTitle) ? h($pageTitle) . ' - ' : ''; ?>ExpenseLogger - <span lang="fa">خرج‌نگار</span></title>
+    <title><?php echo isset($pageTitle) ? h($pageTitle) . ' - ' : ''; ?>ExpenseLogger</title>
     
     <!-- TailwindCSS + DaisyUI -->
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="assets/css/daisyui.min.css" rel="stylesheet" type="text/css" />
+    <script src="assets/js/tailwindcss.min.js"></script>
     
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="assets/js/chart.umd.min.js"></script>
     
     <!-- jQuery (required for Persian DatePicker) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💰%3C/text%3E%3C/svg%3E">
     
     <!-- Vazirmatn Font -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.003/Vazirmatn-font-face.css">
+    <link rel="stylesheet" href="assets/css/vazirmatn-font-face.css">
     
     <!-- Persian Date Picker -->
-    <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+    <script src="assets/js/persian-date.min.js"></script>
+    <script src="assets/js/persian-datepicker.min.js"></script>
+    <link rel="stylesheet" href="assets/css/persian-datepicker.min.css">
     
     <style>
         /* Fix DatePicker z-index above modal */
@@ -190,6 +190,32 @@ echo generateThemeCSS();
             transform: scale(1.25);
         }
         
+        /* Disable dragging and text selection globally */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-drag: none;
+            -ms-user-drag: none;
+            user-drag: none;
+            -webkit-touch-callout: none;
+        }
+        
+        /* Allow text selection in input fields and textareas */
+        input, textarea, [contenteditable="true"] {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+        
+        /* Allow dragging for specific interactive elements if needed */
+        .dock-item, .btn, a, button {
+            cursor: pointer;
+        }
+        
     </style>
 </head>
 <body class="min-h-screen bg-base-200 pt-20">
@@ -246,11 +272,15 @@ echo generateThemeCSS();
             </ul>
         </div>
         <div class="navbar-end">
-            <a href="settings.php" class="btn btn-ghost btn-circle hidden lg:inline-flex">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+            <button onclick="window.location.reload()" class="btn btn-ghost btn-sm" title="Reload">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            <a href="lock.php" class="btn btn-ghost btn-sm" title="Lock">
+                <i class="fas fa-lock"></i>
+            </a>
+            <a href="settings.php" class="btn btn-ghost btn-sm">
+                <i class="fas fa-cog"></i>
+                Settings
             </a>
         </div>
     </div>

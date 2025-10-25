@@ -10,13 +10,18 @@ require_once __DIR__ . '/config/init.php';
 $pageTitle = 'Reports & Analytics';
 $db = Database::getInstance();
 
+require_once __DIR__ . '/config/init.php';
+
+$pageTitle = 'Reports & Analytics';
+$db = Database::getInstance();
+
 // Default date range (last 30 days)
 $dateFrom = $_GET['date_from'] ?? date('Y-m-d', strtotime('-30 days'));
 $dateTo = $_GET['date_to'] ?? date('Y-m-d');
 $selectedCategories = $_GET['categories'] ?? [];
 
 // Get all categories
-$allCategories = $db->query("SELECT * FROM categories ORDER BY name")->fetchAll();
+$allCategories = $db->query("SELECT * FROM categories ORDER BY name", [])->fetchAll();
 
 // Build query based on filters
 $params = [$dateFrom, $dateTo];
@@ -43,7 +48,7 @@ $summary = $db->query($summaryQuery, $params)->fetch();
 // Get expenses by category
 $categoryQuery = "SELECT c.name, COALESCE(SUM(e.amount), 0) as total, COUNT(e.id) as count
 FROM categories c 
-LEFT JOIN expenses e ON c.id = e.category_id 
+LEFT JOIN expenses e ON c.id = e.category_id
 WHERE e.date >= ? AND e.date <= ? $categoryFilter
 GROUP BY c.id, c.name 
 HAVING total > 0
@@ -75,15 +80,48 @@ foreach ($dailyData as $day) {
     $dateRange[$day['date']] = $day['total'];
 }
 
-// Get top expenses
-$topExpensesQuery = "SELECT e.*, c.name as category_name
+// Get monthly expenses for comparison chart
+$monthlyQuery = "SELECT strftime('%Y-%m', date) as month, COALESCE(SUM(amount), 0) as total
 FROM expenses e
-JOIN categories c ON e.category_id = c.id
-WHERE e.date >= ? AND e.date <= ? $categoryFilter
-ORDER BY e.amount DESC
-LIMIT 10";
+WHERE date >= ? AND date <= ? $categoryFilter
+GROUP BY strftime('%Y-%m', date)
+ORDER BY month DESC
+LIMIT 12";
 
-$topExpenses = $db->query($topExpensesQuery, $params)->fetchAll();
+$monthlyData = $db->query($monthlyQuery, $params)->fetchAll();
+
+// Get spending by day of week
+$dowQuery = "SELECT 
+    CASE strftime('%w', date)
+        WHEN '0' THEN 'Sunday'
+        WHEN '1' THEN 'Monday'
+        WHEN '2' THEN 'Tuesday'
+        WHEN '3' THEN 'Wednesday'
+        WHEN '4' THEN 'Thursday'
+        WHEN '5' THEN 'Friday'
+        WHEN '6' THEN 'Saturday'
+    END as day_name,
+    strftime('%w', date) as day_num,
+    COALESCE(SUM(amount), 0) as total,
+    COUNT(*) as count
+FROM expenses e
+WHERE e.date >= ? AND e.date <= ? $categoryFilter
+GROUP BY strftime('%w', date), day_name
+ORDER BY day_num";
+
+$dowData = $db->query($dowQuery, $params)->fetchAll();
+
+// Get spending by hour of day (if time data available, otherwise skip)
+$hourQuery = "SELECT 
+    strftime('%H', datetime) as hour,
+    COALESCE(SUM(amount), 0) as total,
+    COUNT(*) as count
+FROM expenses e
+WHERE e.date >= ? AND e.date <= ? $categoryFilter
+GROUP BY strftime('%H', datetime)
+ORDER BY hour";
+
+$hourData = $db->query($hourQuery, $params)->fetchAll();
 
 // Handle CSV Export
 if (isset($_GET['export']) && $_GET['export'] === 'csv') {
@@ -296,6 +334,68 @@ include __DIR__ . '/includes/header.php';
                 </div>
             </div>
         </div>
+
+        <!-- Advanced Analytics -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Monthly Comparison -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <i class="fas fa-calendar-alt text-indigo-600"></i>
+                        Monthly Trends (Last 12 Months)
+                    </h2>
+                    <div style="height: 300px;">
+                        <?php if (!empty($monthlyData)): ?>
+                            <canvas id="monthlyChart"></canvas>
+                        <?php else: ?>
+                            <div class="text-center text-base-content/50 flex items-center justify-center h-full">
+                                <div>
+                                    <i class="fas fa-calendar-alt text-4xl mb-2"></i>
+                                    <p>Not enough data for monthly trends</p>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spending by Day of Week -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <i class="fas fa-calendar-week text-orange-600"></i>
+                        Spending by Day of Week
+                    </h2>
+                    <div style="height: 300px;">
+                        <?php if (!empty($dowData)): ?>
+                            <canvas id="dowChart"></canvas>
+                        <?php else: ?>
+                            <div class="text-center text-base-content/50 flex items-center justify-center h-full">
+                                <div>
+                                    <i class="fas fa-calendar-week text-4xl mb-2"></i>
+                                    <p>No data available</p>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spending Patterns -->
+        <?php if (!empty($hourData)): ?>
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <i class="fas fa-clock text-teal-600"></i>
+                    Spending by Hour of Day
+                </h2>
+                <div style="height: 300px;">
+                    <canvas id="hourChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
 
         <!-- Top Expenses & Category Breakdown -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -611,6 +711,169 @@ new Chart(document.getElementById('dailyLineChart'), {
         }
     }
 });
+
+// Monthly Trends Chart
+<?php if (!empty($monthlyData)): ?>
+const monthlyData = {
+    labels: <?php echo json_encode(array_map(function($month) {
+        return date('M Y', strtotime($month . '-01'));
+    }, array_column($monthlyData, 'month'))); ?>.reverse(),
+    datasets: [{
+        label: 'Monthly Expenses',
+        data: <?php echo json_encode(array_column(array_reverse($monthlyData), 'total')); ?>.map(v => v / factor),
+        borderColor: 'rgba(99, 102, 241, 1)',
+        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        tension: 0.4,
+        fill: true,
+        borderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 8
+    }]
+};
+
+new Chart(document.getElementById('monthlyChart'), {
+    type: 'line',
+    data: monthlyData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return currencySymbol + (isToman ? context.parsed.y.toFixed(0) : context.parsed.y.toFixed(2));
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return currencySymbol + (isToman ? value.toFixed(0) : value.toFixed(2));
+                    }
+                }
+            }
+        }
+    }
+});
+<?php endif; ?>
+
+// Day of Week Chart
+<?php if (!empty($dowData)): ?>
+const dowData = {
+    labels: <?php echo json_encode(array_column($dowData, 'day_name')); ?>,
+    datasets: [{
+        label: 'Total Amount',
+        data: <?php echo json_encode(array_column($dowData, 'total')); ?>.map(v => v / factor),
+        backgroundColor: [
+            'rgba(239, 68, 68, 0.7)',   // Sunday - Red
+            'rgba(245, 158, 11, 0.7)',  // Monday - Orange
+            'rgba(234, 179, 8, 0.7)',   // Tuesday - Yellow
+            'rgba(34, 197, 94, 0.7)',   // Wednesday - Green
+            'rgba(59, 130, 246, 0.7)',  // Thursday - Blue
+            'rgba(139, 92, 246, 0.7)',  // Friday - Purple
+            'rgba(236, 72, 153, 0.7)',  // Saturday - Pink
+        ],
+        borderColor: [
+            'rgba(239, 68, 68, 1)',
+            'rgba(245, 158, 11, 1)',
+            'rgba(234, 179, 8, 1)',
+            'rgba(34, 197, 94, 1)',
+            'rgba(59, 130, 246, 1)',
+            'rgba(139, 92, 246, 1)',
+            'rgba(236, 72, 153, 1)',
+        ],
+        borderWidth: 2,
+        borderRadius: 8
+    }]
+};
+
+new Chart(document.getElementById('dowChart'), {
+    type: 'bar',
+    data: dowData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return currencySymbol + (isToman ? context.parsed.y.toFixed(0) : context.parsed.y.toFixed(2));
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return currencySymbol + (isToman ? value.toFixed(0) : value.toFixed(2));
+                    }
+                }
+            }
+        }
+    }
+});
+<?php endif; ?>
+
+// Hour of Day Chart
+<?php if (!empty($hourData)): ?>
+const hourLabels = [];
+const hourValues = [];
+<?php foreach ($hourData as $hour): ?>
+hourLabels.push('<?php echo $hour['hour']; ?>:00');
+hourValues.push(<?php echo $hour['total'] / $factor; ?>);
+<?php endforeach; ?>
+
+const hourData = {
+    labels: hourLabels,
+    datasets: [{
+        label: 'Spending by Hour',
+        data: hourValues,
+        borderColor: 'rgba(20, 184, 166, 1)',
+        backgroundColor: 'rgba(20, 184, 166, 0.1)',
+        tension: 0.4,
+        fill: true,
+        borderWidth: 3,
+        pointRadius: 4,
+        pointHoverRadius: 6
+    }]
+};
+
+new Chart(document.getElementById('hourChart'), {
+    type: 'line',
+    data: hourData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return currencySymbol + (isToman ? context.parsed.y.toFixed(0) : context.parsed.y.toFixed(2));
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return currencySymbol + (isToman ? value.toFixed(0) : value.toFixed(2));
+                    }
+                }
+            }
+        }
+    }
+});
+<?php endif; ?>
 <?php endif; ?>
 </script>
 

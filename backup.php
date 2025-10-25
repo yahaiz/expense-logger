@@ -89,10 +89,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 
                 if ($newCategoryId) {
                     $db->query(
-                        "INSERT INTO expenses (amount, category_id, date, note, created_at) VALUES (?, ?, ?, ?, ?)",
+                        "INSERT INTO expenses (amount, category_id, user_id, date, note, created_at) VALUES (?, ?, ?, ?, ?, ?)",
                         [
                             $expense['amount'],
                             $newCategoryId,
+                            1, // Use default admin user ID for imported expenses
                             $expense['date'],
                             $expense['note'] ?? '',
                             $expense['created_at'] ?? date('Y-m-d H:i:s')

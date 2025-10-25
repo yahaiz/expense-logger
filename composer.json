@@ -1,16 +1,32 @@
 {
     "name": "expenselogger/expenselogger",
-    "description": "Personal Expense Tracker - خرج‌نگار",
+    "description": "Personal Expense Tracker - Standalone Desktop Application",
     "type": "project",
     "license": "MIT",
+    "homepage": "https://github.com/yourusername/expenselogger",
+    "keywords": [
+        "expense",
+        "tracker",
+        "finance",
+        "personal",
+        "desktop",
+        "php",
+        "sqlite",
+        "electron"
+    ],
     "authors": [
         {
             "name": "ExpenseLogger Team",
-            "email": "contact@expenselogger.com"
+            "email": "contact@expenselogger.app",
+            "homepage": "https://github.com/yourusername/expenselogger"
         }
     ],
+    "support": {
+        "issues": "https://github.com/yourusername/expenselogger/issues",
+        "source": "https://github.com/yourusername/expenselogger"
+    },
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.2",
         "monolog/monolog": "^3.0",
         "symfony/rate-limiter": "^6.0"
     },
@@ -21,7 +37,10 @@
     "autoload": {
         "psr-4": {
             "ExpenseLogger\\": "src/"
-        }
+        },
+        "files": [
+            "config/init.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -31,10 +50,21 @@
     "scripts": {
         "test": "phpunit",
         "test:coverage": "phpunit --coverage-html coverage",
-        "phpstan": "phpstan analyse"
+        "phpstan": "phpstan analyse",
+        "post-install-cmd": [
+            "echo 'ExpenseLogger installed successfully!'"
+        ],
+        "post-update-cmd": [
+            "echo 'ExpenseLogger updated successfully!'"
+        ]
     },
     "config": {
         "optimize-autoloader": true,
-        "sort-packages": true
-    }
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

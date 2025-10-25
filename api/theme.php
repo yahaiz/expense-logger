@@ -2,6 +2,8 @@
 /**
  * Theme Toggle API
  */
+require_once __DIR__ . '/../config/init.php';
+
 session_start();
 
 header('Content-Type: application/json');
@@ -9,9 +11,10 @@ header('Content-Type: application/json');
 // Include rate limiter
 require_once __DIR__ . '/../config/ratelimiter.php';
 
-// Rate limiting: 10 requests per minute per IP
+// Rate limiting: configured requests per minute per IP
 $clientIP = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-if (!RateLimiter::check('theme_api_' . $clientIP, 10, 60)) {
+$rateLimitRequests = config('security.rate_limit_requests', 10);
+if (!RateLimiter::check('theme_api_' . $clientIP, $rateLimitRequests, 60)) {
     http_response_code(429);
     logWarning('Rate limit exceeded for theme API', ['ip' => $clientIP]);
     echo json_encode(['error' => 'Too many requests. Please try again later.']);
